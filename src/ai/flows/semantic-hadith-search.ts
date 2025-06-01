@@ -22,7 +22,7 @@ export type SemanticHadithSearchInput = z.infer<typeof SemanticHadithSearchInput
 
 const HadithObjectSchema = z.object({
   hadithText: z.string().describe('The full and accurate text of the Hadith.'),
-  source: z.literal('Sahih Bukhari').describe('The source collection, which must be Sahih Bukhari.'),
+  source: z.string().describe('The source collection. For this application, this value MUST be "Sahih Bukhari".'),
   reference: z.string().describe('A precise reference for the Hadith within Sahih Bukhari (e.g., "Book 2, Hadith 15" or "Vol. 1, Book 1, Hadith 1").')
 });
 
@@ -50,10 +50,10 @@ Based on the user's query, you will perform a semantic search to find the most r
 
 For each Hadith found, you MUST provide:
 1.  \`hadithText\`: The full and accurate text of the Hadith.
-2.  \`source\`: This should ALWAYS be "Sahih Bukhari".
-3.  \`reference\`: A precise reference for the Hadith within Sahih Bukhari (e.g., "Book 2, Hadith 15" or "Vol. 1, Book 1, Hadith 1").
+2.  \`source\`: This should ALWAYS be "Sahih Bukhari". Do not use any other value for this field.
+3.  \`reference\`: A precise reference for the Hadith within Sahih Bukhari (e.g., "Book 2, Hadith 15" or "Vol. 1, Book 1, Hadith 1"). The reference must be accurate and verifiable.
 
-If you cannot find a relevant Hadith in Sahih Bukhari for the given query, you MUST return an empty array for the results. Do NOT invent Hadiths, provide Hadiths from other collections (like Sahih Muslim, Sunan Abu Dawood, etc.), or provide incomplete references.
+If you cannot find a relevant Hadith in Sahih Bukhari for the given query, you MUST return an empty array for the results. Do NOT invent Hadiths, provide Hadiths from other collections (like Sahih Muslim, Sunan Abu Dawood, etc.), or provide incomplete or vague references. Ensure every Hadith returned is genuinely from Sahih Bukhari.
 
 User Query: {{{query}}}
   `,
@@ -74,3 +74,4 @@ const semanticHadithSearchFlow = ai.defineFlow(
     return output;
   }
 );
+
