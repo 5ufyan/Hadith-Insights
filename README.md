@@ -5,4 +5,4 @@ This is a NextJS starter in Firebase Studio.
 To get started, take a look at src/app/page.tsx.
 
 
-furst of all do nmp install
+first of all do :   nmp install
