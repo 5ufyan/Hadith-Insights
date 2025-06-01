@@ -1,11 +1,15 @@
+
 'use client';
 import { useState, useEffect, useCallback } from 'react';
 import { useToast } from "@/hooks/use-toast";
+import type { HadithObject } from '@/ai/flows/semantic-hadith-search';
 
-const SAVED_HADITHS_KEY = 'hadithInsights_savedHadiths';
+const SAVED_HADITHS_KEY = 'hadithInsights_savedHadiths_v2'; // Changed key to avoid conflicts with old structure
+
+export type SavedHadith = HadithObject;
 
 export function useSavedHadiths() {
-  const [savedHadiths, setSavedHadiths] = useState<string[]>([]);
+  const [savedHadiths, setSavedHadiths] = useState<SavedHadith[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const { toast } = useToast();
 
@@ -14,7 +18,18 @@ export function useSavedHadiths() {
       try {
         const items = localStorage.getItem(SAVED_HADITHS_KEY);
         if (items) {
-          setSavedHadiths(JSON.parse(items));
+          const parsedItems = JSON.parse(items) as SavedHadith[];
+          // Basic validation for the structure of saved items
+          if (Array.isArray(parsedItems) && parsedItems.every(item => 
+            typeof item === 'object' && item !== null &&
+            'hadithText' in item && 'source' in item && 'reference' in item
+          )) {
+            setSavedHadiths(parsedItems);
+          } else {
+            // Clear invalid data
+            localStorage.removeItem(SAVED_HADITHS_KEY);
+            setSavedHadiths([]);
+          }
         }
       } catch (error) {
         console.error("Error loading saved Hadiths from localStorage", error);
@@ -29,10 +44,10 @@ export function useSavedHadiths() {
     }
   }, [toast]);
 
-  const saveHadith = useCallback((hadith: string) => {
+  const saveHadith = useCallback((hadith: SavedHadith) => {
     setSavedHadiths(prev => {
-      if (prev.includes(hadith)) return prev;
-      const newSaved = [hadith, ...prev]; // Add to the beginning
+      if (prev.some(h => h.hadithText === hadith.hadithText && h.reference === hadith.reference)) return prev;
+      const newSaved = [hadith, ...prev]; 
       try {
         localStorage.setItem(SAVED_HADITHS_KEY, JSON.stringify(newSaved));
         toast({
@@ -51,9 +66,9 @@ export function useSavedHadiths() {
     });
   }, [toast]);
 
-  const unsaveHadith = useCallback((hadith: string) => {
+  const unsaveHadith = useCallback((hadith: SavedHadith) => {
     setSavedHadiths(prev => {
-      const newSaved = prev.filter(h => h !== hadith);
+      const newSaved = prev.filter(h => !(h.hadithText === hadith.hadithText && h.reference === hadith.reference));
       try {
         localStorage.setItem(SAVED_HADITHS_KEY, JSON.stringify(newSaved));
          toast({
@@ -72,8 +87,8 @@ export function useSavedHadiths() {
     });
   }, [toast]);
 
-  const isHadithSaved = useCallback((hadith: string) => {
-    return savedHadiths.includes(hadith);
+  const isHadithSaved = useCallback((hadith: SavedHadith) => {
+    return savedHadiths.some(h => h.hadithText === hadith.hadithText && h.reference === hadith.reference);
   }, [savedHadiths]);
 
   return { savedHadiths, saveHadith, unsaveHadith, isHadithSaved, isLoaded };

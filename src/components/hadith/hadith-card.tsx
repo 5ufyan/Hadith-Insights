@@ -1,32 +1,45 @@
+
 'use client';
 
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import type { HadithObject } from '@/ai/flows/semantic-hadith-search';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Bookmark } from 'lucide-react';
+import { Bookmark, BookOpen } from 'lucide-react';
 import { useSavedHadiths } from '@/hooks/use-saved-hadiths';
 import { cn } from '@/lib/utils';
+import { Badge } from '@/components/ui/badge';
 
 interface HadithCardProps {
-  hadithText: string;
+  hadith: HadithObject;
   className?: string;
+  style?: React.CSSProperties;
 }
 
-export function HadithCard({ hadithText, className }: HadithCardProps) {
+export function HadithCard({ hadith, className, style }: HadithCardProps) {
   const { saveHadith, unsaveHadith, isHadithSaved, isLoaded } = useSavedHadiths();
-  const isSaved = isLoaded && isHadithSaved(hadithText);
+  const isSaved = isLoaded && isHadithSaved(hadith);
 
   const handleToggleSave = () => {
     if (isSaved) {
-      unsaveHadith(hadithText);
+      unsaveHadith(hadith);
     } else {
-      saveHadith(hadithText);
+      saveHadith(hadith);
     }
   };
 
   return (
-    <Card className={cn("shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col", className)}>
-      <CardContent className="p-6 flex-grow">
-        <p className="text-foreground/90 leading-relaxed whitespace-pre-wrap">{hadithText}</p>
+    <Card className={cn("shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col", className)} style={style}>
+      <CardHeader className="pb-2 pt-4 px-4">
+        <div className="flex justify-between items-center">
+          <CardTitle className="text-sm font-semibold text-primary flex items-center">
+            <BookOpen className="mr-2 h-4 w-4" />
+            {hadith.source}
+          </CardTitle>
+          <Badge variant="secondary" className="text-xs">{hadith.reference}</Badge>
+        </div>
+      </CardHeader>
+      <CardContent className="p-4 flex-grow">
+        <p className="text-foreground/90 leading-relaxed whitespace-pre-wrap">{hadith.hadithText}</p>
       </CardContent>
       <CardFooter className="p-4 border-t">
         <Button

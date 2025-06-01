@@ -1,3 +1,4 @@
+
 import { Suspense } from 'react';
 import Image from 'next/image';
 import { searchHadithsAction } from './actions';
@@ -6,7 +7,7 @@ import { HadithCard } from '@/components/hadith/hadith-card';
 import { HadithFilters } from '@/components/hadith/hadith-filters';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Terminal } from "lucide-react";
-import { LoadingSpinner } from '@/components/loading-spinner';
+import type { HadithObject } from '@/ai/flows/semantic-hadith-search';
 
 interface HomePageProps {
   searchParams?: {
@@ -38,10 +39,10 @@ async function SearchResults({ query }: { query: string }) {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in">
-      {results.map((hadith, index) => (
+      {results.map((hadith: HadithObject, index: number) => (
         <HadithCard 
-          key={index} 
-          hadithText={hadith} 
+          key={`${hadith.reference}-${index}`} 
+          hadith={hadith}
           className="animate-slide-up" 
           style={{ animationDelay: `${index * 100}ms` }} 
         />
@@ -54,11 +55,15 @@ function SearchResultsSkeleton() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {[...Array(3)].map((_, index) => (
-        <div key={index} className="bg-card p-6 rounded-lg shadow-md animate-pulse">
-          <div className="h-4 bg-muted rounded w-3/4 mb-4"></div>
-          <div className="h-4 bg-muted rounded w-full mb-2"></div>
-          <div className="h-4 bg-muted rounded w-full mb-2"></div>
-          <div className="h-4 bg-muted rounded w-5/6 mb-6"></div>
+        <div key={index} className="bg-card p-4 rounded-lg shadow-md animate-pulse">
+          <div className="flex justify-between items-center mb-2">
+            <div className="h-4 bg-muted rounded w-1/3"></div>
+            <div className="h-4 bg-muted rounded w-1/4"></div>
+          </div>
+          <div className="h-3 bg-muted rounded w-3/4 mb-3"></div>
+          <div className="h-3 bg-muted rounded w-full mb-1.5"></div>
+          <div className="h-3 bg-muted rounded w-full mb-1.5"></div>
+          <div className="h-3 bg-muted rounded w-5/6 mb-4"></div>
           <div className="h-8 bg-muted rounded w-1/4"></div>
         </div>
       ))}
@@ -94,7 +99,7 @@ export default function HomePage({ searchParams }: HomePageProps) {
             </>
           ) : (
             <div className="flex flex-col items-center justify-center text-center py-16 bg-card rounded-lg shadow-md">
-              <Image src="https://placehold.co/300x200.png" alt="Stylized Islamic calligraphy or serene mosque" data-ai-hint="islamic calligraphy" className="mb-6 rounded-md" width={300} height={200} />
+              <Image src="https://placehold.co/300x200.png" alt="Stylized Islamic calligraphy or serene mosque" data-ai-hint="islamic calligraphy" className="mb-6 rounded-md" width={300} height={200} priority={false} />
               <h3 className="text-2xl font-headline font-semibold mb-2">Welcome to Hadith Insights</h3>
               <p className="text-lg text-muted-foreground max-w-md">
                 Unlock the wisdom of Sahih Bukhari. Enter a query above to begin your semantic search for relevant Hadiths.

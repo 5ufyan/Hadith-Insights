@@ -1,10 +1,11 @@
+
 'use client';
 
 import { HadithCard } from '@/components/hadith/hadith-card';
-import { useSavedHadiths } from '@/hooks/use-saved-hadiths';
+import { useSavedHadiths, type SavedHadith } from '@/hooks/use-saved-hadiths';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { BookmarkX, Info } from 'lucide-react';
+import { BookmarkX } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { LoadingSpinner } from '@/components/loading-spinner';
 
@@ -44,10 +45,10 @@ export default function SavedHadithsPage() {
         </Alert>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {savedHadiths.map((hadith, index) => (
+          {savedHadiths.map((hadith: SavedHadith, index: number) => (
              <HadithCard 
-              key={index} 
-              hadithText={hadith}
+              key={`${hadith.reference}-${index}`} 
+              hadith={hadith}
               className="animate-slide-up"
               style={{ animationDelay: `${index * 100}ms` }}
             />
