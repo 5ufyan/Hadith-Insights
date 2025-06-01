@@ -1,4 +1,3 @@
-// 'use server';
 
 /**
  * @fileOverview Implements semantic search for Hadiths.

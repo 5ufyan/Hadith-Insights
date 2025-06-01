@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+import Image from 'next/image';
 import { searchHadithsAction } from './actions';
 import { HadithSearchForm } from '@/components/hadith/hadith-search-form';
 import { HadithCard } from '@/components/hadith/hadith-card';
@@ -93,7 +94,7 @@ export default function HomePage({ searchParams }: HomePageProps) {
             </>
           ) : (
             <div className="flex flex-col items-center justify-center text-center py-16 bg-card rounded-lg shadow-md">
-              <img src="https://placehold.co/300x200.png" alt="Stylized Islamic calligraphy or serene mosque" data-ai-hint="islamic calligraphy" className="mb-6 rounded-md" width="300" height="200" />
+              <Image src="https://placehold.co/300x200.png" alt="Stylized Islamic calligraphy or serene mosque" data-ai-hint="islamic calligraphy" className="mb-6 rounded-md" width={300} height={200} />
               <h3 className="text-2xl font-headline font-semibold mb-2">Welcome to Hadith Insights</h3>
               <p className="text-lg text-muted-foreground max-w-md">
                 Unlock the wisdom of Sahih Bukhari. Enter a query above to begin your semantic search for relevant Hadiths.
