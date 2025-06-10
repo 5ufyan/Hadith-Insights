@@ -4,7 +4,7 @@ import { AppLayout } from '@/components/layout/app-layout';
 import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
-  title: 'Hadith Insights',
+  title: 'Tafheem-e-Sunnah',
   description: 'Semantic search for Sahih Bukhari Hadiths',
 };
 

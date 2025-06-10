@@ -8,7 +8,7 @@ export function Header() {
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors">
           <BookOpenText className="h-7 w-7" />
-          <h1 className="text-2xl font-headline font-semibold">Hadith Insights</h1>
+          <h1 className="text-2xl font-headline font-semibold">Tafheem-e-Sunnah</h1>
         </Link>
         <nav>
           <Button variant="ghost" asChild>

@@ -1,4 +1,4 @@
-# **App Name**: Hadith Insights
+# **App Name**: Tafheem-e-Sunnah
 
 ## Core Features:
 
