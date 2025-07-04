@@ -31,8 +31,8 @@ async function SearchResults({ query }: { query: string }) {
   if (results.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-xl text-muted-foreground">No Hadiths found matching your query.</p>
-        <p className="text-sm text-muted-foreground mt-2">Try a different search term or broaden your query.</p>
+        <p className="text-xl text-muted-foreground">This hadith was not found in Sahih Bukhari.</p>
+        <p className="text-sm text-muted-foreground mt-2">Try a hadith that is in Sahih Bukhari.</p>
       </div>
     );
   }
@@ -83,9 +83,7 @@ export default function HomePage({ searchParams }: HomePageProps) {
       </section>
       
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        <aside className="lg:col-span-1">
-          <HadithFilters />
-        </aside>
+       
 
         <main className="lg:col-span-3">
           {query ? (
@@ -99,10 +97,9 @@ export default function HomePage({ searchParams }: HomePageProps) {
             </>
           ) : (
             <div className="flex flex-col items-center justify-center text-center py-16 bg-card rounded-lg shadow-md">
-              <Image src="https://placehold.co/300x200.png" alt="Stylized Islamic calligraphy or serene mosque" data-ai-hint="islamic calligraphy" className="mb-6 rounded-md" width={300} height={200} priority={false} />
               <h3 className="text-2xl font-headline font-semibold mb-2">Welcome to Tafheem-e-Sunnah</h3>
               <p className="text-lg text-muted-foreground max-w-md">
-                Unlock the wisdom of Sahih Bukhari. Enter a query above to begin your semantic search for relevant Hadiths.
+                Unlock the wisdom of Sahih Bukhari. Enter a query above to begin yoursearch for relevant Hadiths.
               </p>
             </div>
           )}
